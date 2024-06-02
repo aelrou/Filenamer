@@ -1,5 +1,7 @@
 $postTimeStamp = Get-Clipboard -Raw
 
+Write-Host "1: $($postTimeStamp)"
+
 function RemoveFilesystemCharacters {
     Param([string]$inputString)
     $inputString = $inputString.Replace("$([char]34)", "$([char]32)")
@@ -60,14 +62,18 @@ if ($postTimeStamp -match "^([a-jA-Jl-pL-Pr-vR-VyY]{3,9})\s([0-1]?[0-9]+)\,\s([1
     
     try {
         $postName = [datetime]::parseexact("$($year)-$($month)-$($day)", "yyyy-MMM-dd", $null).ToString("yyyy-MM-dd")
+   Write-Host "2: $($postName)"
     }
     catch {
         try {
             $postName = [datetime]::parseexact("$($year)-$($month)-$($day)", "yyyy-MMM-d", $null).ToString("yyyy-MM-dd")
+   Write-Host "3: $($postName)"
         }
         catch {
+   Write-Host "5: $($postName)"
             <#Do this if a terminating exception happens#>
         }    
+   Write-Host "6: $($postName)"
         <#Do this if a terminating exception happens#>
     }
 
@@ -99,13 +105,17 @@ if ($postTimeStamp -match "^([a-jA-Jl-pL-Pr-vR-VyY]{3,9})\s([0-1]?[0-9]+)\,\s([1
     }
     
     $postName = RemoveConsecutiveSpaces($postName)
+   Write-Host "4: $($postName)"
     Set-Clipboard -Value $postName
-    # Write-Host $postName
+    Write-Host $postName
 }
 else {
     [string]$postName = RemoveFilesystemCharacters($postTimeStamp)
+   Write-Host "7: $($postName)"
     $postName = RemoveLineBreaks($postName)
+   Write-Host "8: $($postName)"
     $postName = RemoveConsecutiveSpaces($postName)
+   Write-Host "9: $($postName)"
     Set-Clipboard -Value $postName
     # Write-Host $now.ToString("yyyy-MM-dd")
 }
